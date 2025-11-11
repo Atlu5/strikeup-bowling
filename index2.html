@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StrikeUp - Connect. Learn. Bowl.</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-bowling-ball"></i>
+                <span>StrikeUp</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="#home" class="nav-link active">Home</a></li>
+                <li class="nav-item"><a href="#connect" class="nav-link">Connect</a></li>
+                <li class="nav-item"><a href="#learn" class="nav-link">Learn</a></li>
+                <li class="nav-item"><a href="#profile" class="nav-link">Profile</a></li>
+                <li class="nav-item" id="auth-buttons">
+                    <button class="btn-login" id="loginBtn">Sign In</button>
+                </li>
+                <li class="nav-item" id="user-menu" style="display: none;">
+                    <div class="user-dropdown">
+                        <img src="" alt="User" class="user-avatar-sm" id="userAvatarSm">
+                        <span id="userNameSm"></span>
+                        <i class="fas fa-chevron-down"></i>
+                        <div class="dropdown-menu">
+                            <a href="#profile" class="dropdown-item">Profile</a>
+                            <a href="#" class="dropdown-item" id="logoutBtn">Logout</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="container">
+                <div class="hero" id="heroSection">
+                    <h1>Welcome to StrikeUp</h1>
+                    <p class="hero-subtitle">Find bowling partners, improve your game, and connect with the bowling community</p>
+                    
+                    <div class="user-stats" id="userStats">
+                        <!-- Dynamic stats will be loaded here -->
+                    </div>
+
+                    <div class="quick-actions">
+                        <button class="btn-primary" onclick="showSection('connect')">
+                            <i class="fas fa-users"></i> Find Partners
+                        </button>
+                        <button class="btn-secondary" onclick="showSection('learn')">
+                            <i class="fas fa-graduation-cap"></i> Start Learning
+                        </button>
+                    </div>
+                </div>
+
+                <div class="activity-feed">
+                    <h2>Recent Activity</h2>
+                    <div class="activity-list" id="activityList">
+                        <!-- Dynamic activity will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Connect Section -->
+        <section id="connect" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h1>Find Bowling Partners</h1>
+                    <button class="btn-primary" id="createSessionBtn">
+                        <i class="fas fa-plus"></i> Create Session
+                    </button>
+                </div>
+
+                <div class="search-filters">
+                    <input type="text" placeholder="Search by location..." class="search-input" id="locationSearch">
+                    <select class="filter-select" id="skillFilter">
+                        <option value="all">All Skill Levels</option>
+                        <option value="beginner">Beginner (0-120)</option>
+                        <option value="intermediate">Intermediate (121-180)</option>
+                        <option value="advanced">Advanced (181+)</option>
+                    </select>
+                    <select class="filter-select" id="distanceFilter">
+                        <option value="any">Any Distance</option>
+                        <option value="5">Within 5 miles</option>
+                        <option value="10">Within 10 miles</option>
+                        <option value="25">Within 25 miles</option>
+                    </select>
+                    <button class="btn-primary" onclick="filterMatches()">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </div>
+
+                <div class="matches-grid" id="matchesGrid">
+                    <!-- Dynamic matches will be loaded here -->
+                </div>
+
+                <div class="sessions-section">
+                    <div class="section-header">
+                        <h2>Open Bowling Sessions</h2>
+                        <button class="btn-secondary" onclick="refreshSessions()">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                    <div class="sessions-grid" id="sessionsGrid">
+                        <!-- Dynamic sessions will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Learn Section -->
+        <section id="learn" class="section">
+            <div class="container">
+                <h1>Improve Your Game</h1>
+                
+                <div class="learning-paths">
+                    <div class="path-card beginner">
+                        <h3>Beginner Path</h3>
+                        <p>Master the fundamentals</p>
+                        <ul>
+                            <li>Proper grip & stance</li>
+                            <li>4-step approach</li>
+                            <li>Basic spare shooting</li>
+                        </ul>
+                        <button class="btn-primary" onclick="startLearningPath('beginner')">
+                            Start Learning
+                        </button>
+                    </div>
+                    
+                    <div class="path-card intermediate">
+                        <h3>Intermediate Path</h3>
+                        <p>Develop advanced techniques</p>
+                        <ul>
+                            <li>Hook development</li>
+                            <li>Lane reading</li>
+                            <li>Advanced spare systems</li>
+                        </ul>
+                        <button class="btn-primary" onclick="startLearningPath('intermediate')">
+                            Continue
+                        </button>
+                    </div>
+                    
+                    <div class="path-card advanced">
+                        <h3>Advanced Path</h3>
+                        <p>Master competitive bowling</p>
+                        <ul>
+                            <li>Axis rotation & rev rate</li>
+                            <li>Complex oil patterns</li>
+                            <li>Mental game strategies</li>
+                        </ul>
+                        <button class="btn-primary" onclick="startLearningPath('advanced')">
+                            Unlock Pro
+                        </button>
+                    </div>
+                </div>
+
+                <div class="video-library">
+                    <h2>Video Tutorials</h2>
+                    <div class="videos-grid" id="videosGrid">
+                        <!-- Dynamic videos will be loaded here -->
+                    </div>
+                </div>
+
+                <div class="video-analysis">
+                    <h2>Frame Analysis Tool</h2>
+                    <div class="analysis-upload">
+                        <div class="upload-area" id="uploadArea">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Upload your bowling video for analysis</p>
+                            <input type="file" id="videoUpload" accept="video/*" hidden>
+                            <button class="btn-secondary" onclick="document.getElementById('videoUpload').click()">
+                                Choose File
+                            </button>
+                            <div class="upload-progress" id="uploadProgress" style="display: none;">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="progressFill"></div>
+                                </div>
+                                <span id="progressText">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile" class="section">
+            <div class="container">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <div class="avatar-placeholder" id="profileAvatar">JD</div>
+                        <input type="file" id="avatarUpload" accept="image/*" hidden>
+                        <button class="btn-secondary btn-sm" onclick="document.getElementById('avatarUpload').click()">
+                            Change Photo
+                        </button>
+                    </div>
+                    <div class="profile-info">
+                        <h1 id="profileName">John Doe</h1>
+                        <p class="profile-location">
+                            <i class="fas fa-map-marker-alt"></i> 
+                            <span id="profileLocation">New York, NY</span>
+                            <button class="btn-edit" onclick="editLocation()">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </p>
+                        <div class="profile-badges" id="profileBadges">
+                            <!-- Dynamic badges will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-stats" id="profileStats">
+                    <!-- Dynamic stats will be loaded here -->
+                </div>
+
+                <div class="progress-chart">
+                    <h3>Average Score Progress</h3>
+                    <div class="chart-container">
+                        <canvas id="progressChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="recent-matches">
+                    <h3>Recent Matches</h3>
+                    <div class="matches-list" id="recentMatches">
+                        <!-- Dynamic recent matches will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modals -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="authModalTitle">Sign In to StrikeUp</h2>
+            <form class="auth-form" id="authForm">
+                <!-- Dynamic form content -->
+            </form>
+            <p class="auth-switch" id="authSwitch">
+                Don't have an account? <a href="#" id="switchAuth">Sign up</a>
+            </p>
+        </div>
+    </div>
+
+    <div id="sessionModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Create Bowling Session</h2>
+            <form class="session-form" id="sessionForm">
+                <input type="text" id="sessionLocation" placeholder="Location" required>
+                <input type="datetime-local" id="sessionDateTime" required>
+                <select id="sessionSkillLevel" required>
+                    <option value="">Select skill level</option>
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                    <option value="all">All Levels</option>
+                </select>
+                <input type="number" id="sessionMaxParticipants" placeholder="Max participants" min="2" max="20" required>
+                <textarea id="sessionDetails" placeholder="Additional details..."></textarea>
+                <button type="submit" class="btn-primary">Create Session</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="messageModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Send Message</h2>
+            <div class="message-recipient">
+                To: <span id="recipientName"></span>
+            </div>
+            <form class="message-form" id="messageForm">
+                <textarea id="messageContent" placeholder="Type your message..." required></textarea>
+                <button type="submit" class="btn-primary">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification System -->
+    <div class="notification-container" id="notificationContainer"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
